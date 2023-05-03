@@ -1,6 +1,7 @@
 <?php
 
-    include("./db/conexao.php");
+    include("../db/conexao.php");
+
     $erro = "<p class='text-danger'</p>";
     if(isset($_POST['usuario']) || isset($_POST['senha'])){
 
@@ -11,11 +12,11 @@
            $erro = "<p class='text-danger'>Preencha o campo CPF<p>";
         }
 
-        if(strlen($cpf) != 11){
+        else if(strlen($cpf) != 11){
             $erro = "<p class='text-danger>CPF Inválido</p>";
         }
 
-        if ($cpf == '00000000000' || 
+        else if ($cpf == '00000000000' || 
 		$cpf == '11111111111' || 
 		$cpf == '22222222222' || 
 		$cpf == '33333333333' || 
@@ -28,11 +29,38 @@
             $erro = "<p class='text-danger>CPF Inválido</p>";
         }
 
-        if($senha == "" || $senha == null|| strlen($senha) == 0) {
+        else if($senha == "" || $senha == null|| strlen($senha) == 0) {
             $erro = "<p class='text-danger'>Preencha o campo Senha<p>";
         }
+        
+        else{
+            
+            $cpf = $mysqli -> real_escape_string($_POST['usuario']);
+            $senha = $mysqli -> real_escape_string($_POST['senha']);
 
-            header("Location: ./home.php");
+            $sql_code = "SELECT * FROM administradores WHERE cpf = '$cpf' AND matricula = '$senha'";
+            $sql_query = $mysqli->query($sql_code) or die("Falha no sistema: " . $mysqli->error);
+                    
+            $qntd = $sql_query-> num_rows;
+            
+            if($qntd == 1){
+                
+                $usuario = $sql_query->fetch_assoc();
+    
+                if(!isset($_SESSION)){
+                    session_start();
+                }
+    
+                $_SESSION['user'] = $usuario['usuario'];
+                $_SESSION['name'] = $usuario['nome'];
+                
+                header("Location: ./home.php");
+                
+            } else {
+                echo "<b style='color:red'>Usuário ou senha inválidos!</b>";
+            }
+        }
+
     }
 ?>
 
@@ -44,7 +72,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
         <link rel="stylesheet" href="../styles/logins.css" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
-        <title>Login - Responsável</title>
+        <title>Login - Responável</title>
     </head>
 
     <body>
@@ -58,7 +86,7 @@
                 <form method="POST">
                 
                 <div class="form-outline mb-4">
-                    <input type="text" id="usuario" name="usuario" class="form-control form-control-lg"
+                    <input type="text" id="cpf" name="usuario" class="form-control form-control-lg"
                     placeholder="Insira seu CPF" />
                     <label class="form-label" for="form3Example3">CPF</label>
                 </div>
@@ -90,6 +118,19 @@
             </div>
         </div>
         </section>
+	    
+	    <script>
+		    const inpucpf = document.getElementById('cpf');
+			    inpucpf.addEventListener('keyup', formatarCPF);
+
+		    function formatarCPF(e){
+				var v=e.target.value.replace(/\D/g,"");
+				v=v.replace(/(\d{3})(\d)/,"$1.$2");
+				v=v.replace(/(\d{3})(\d)/,"$1.$2");
+				v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2");
+				e.target.value = v;
+			}
+	    </script>
     </body>
 
 </html>
