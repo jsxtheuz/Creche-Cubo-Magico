@@ -86,7 +86,7 @@
                 <form method="POST">
                 
                 <div class="form-outline mb-4">
-                    <input type="text" id="usuario" name="usuario" class="form-control form-control-lg"
+                    <input type="text" id="cpf" name="usuario" class="form-control form-control-lg"
                     placeholder="Insira seu CPF" />
                     <label class="form-label" for="form3Example3">CPF</label>
                 </div>
@@ -118,6 +118,19 @@
             </div>
         </div>
         </section>
+	    
+	    <script>
+		    const inpucpf = document.getElementById('cpf');
+			    inpucpf.addEventListener('keyup', formatarCPF);
+
+		    function formatarCPF(e){
+				var v=e.target.value.replace(/\D/g,"");
+				v=v.replace(/(\d{3})(\d)/,"$1.$2");
+				v=v.replace(/(\d{3})(\d)/,"$1.$2");
+				v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2");
+				e.target.value = v;
+			}
+	    </script>
     </body>
 
 </html>
