@@ -1,0 +1,64 @@
+li > a{
+    color: white !important;
+    display: inline-block;
+    flex-direction: row;
+    font-weight: bold;
+}
+
+ul{
+    position:fixed !important;
+    font-size: 18px;
+    border-right: 2px inset blue;
+    width: 20%;
+    height: 100%;
+    background-color: blue;
+    float: left !important;
+}
+
+li > img{
+    flex-direction: row;
+    float: left;
+    margin-right: 10px;
+}
+
+li{
+    flex-direction: row;
+}
+
+.box-das-li{
+    height: 100%;
+    margin-top: 100%;
+    display: inline-block;
+    flex-direction: row;
+    margin-left: 40px;
+}
+
+@media (max-width: 1075px) {
+    ul{
+        width: 100%;
+        height: 15%;
+    }  
+    
+    .box-das-li{
+        margin-left: 20px;
+        height: 20%;
+        width: 100%;
+        margin-top: 25px;
+    }
+
+    li{
+        display: inline-block;
+    }
+
+    li > a{
+        display: inline-block;
+        margin-top: 0;
+        margin-left: -10;
+        float: right;
+    }
+
+    li > img{
+        display:inline-block;
+        float: left;
+    }
+}
